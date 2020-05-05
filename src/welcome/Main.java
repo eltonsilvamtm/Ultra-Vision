@@ -1,10 +1,10 @@
-package homepage;
+package welcome;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
-		new HomepageController(); 
+		new WelcomeController();
 
 	}
 
