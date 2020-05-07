@@ -1,32 +1,42 @@
 package addtitle;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import enums.Plans;
+
 import java.awt.Color;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
 public class AddTitleView extends JFrame {
 	
 	private AddTitleController ControllerInternalRef;
+	private Plans[] MembershipPlans = Plans.values();
 
 	private JPanel contentPane;
-	private JTextField TitleTextField;
-	private JTextField GenreTextField;
-	private JTextField DirectorOrBandTextField;
-	private JTextField YearOfReleaseTextField;
-	private JTextField QuantityTextField;
+	
+	private JTextField TitleTextField, GenreTextField, DirectorOrBandTextField, YearOfReleaseTextField, QuantityTextField;
+	
+	private JLabel AddNewTitleLabel, GenreLabel, TitleLabel, DirectorOrBandLabel, YearOfReleaseLabel, CategoryLabel, QuantityLabel;
+	
+	private JButton AddButton, btnBack;
+	
+	private JComboBox<Plans> MembershipTypeBox;
 
 	
 	public AddTitleView(AddTitleController controller) {
+		this.setLocationRelativeTo(null);
+		this.ControllerInternalRef = controller;
 		setResizable(false);
 		setTitle("Add new Title");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,31 +51,31 @@ public class AddTitleView extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		JLabel AddNewTitleLabel = new JLabel("Add a new Title");
+		AddNewTitleLabel = new JLabel("Add a new Title");
 		AddNewTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		AddNewTitleLabel.setFont(new Font("Arial", Font.PLAIN, 22));
 		AddNewTitleLabel.setBounds(10, 10, 456, 48);
 		panel.add(AddNewTitleLabel);
 		
-		JLabel GenreLabel = new JLabel("Genre:");
+		GenreLabel = new JLabel("Genre:");
 		GenreLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		GenreLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		GenreLabel.setBounds(10, 140, 456, 28);
 		panel.add(GenreLabel);
 		
-		JLabel TitleLabel = new JLabel("Title:");
+		TitleLabel = new JLabel("Title:");
 		TitleLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		TitleLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		TitleLabel.setBounds(10, 68, 456, 28);
 		panel.add(TitleLabel);
 		
-		JLabel DirectorOrBandLabel = new JLabel("Director/Band:");
+		DirectorOrBandLabel = new JLabel("Director/Band:");
 		DirectorOrBandLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		DirectorOrBandLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		DirectorOrBandLabel.setBounds(10, 209, 456, 28);
 		panel.add(DirectorOrBandLabel);
 		
-		JLabel YearOfReleaseLabel = new JLabel("Year of release:");
+		YearOfReleaseLabel = new JLabel("Year of release:");
 		YearOfReleaseLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		YearOfReleaseLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		YearOfReleaseLabel.setBounds(10, 278, 456, 28);
@@ -77,11 +87,11 @@ public class AddTitleView extends JFrame {
 		panel.add(TitleTextField);
 		TitleTextField.setColumns(10);
 		
-		JLabel MembershipTypeLabel = new JLabel("Membership type:");
-		MembershipTypeLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		MembershipTypeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-		MembershipTypeLabel.setBounds(10, 422, 456, 28);
-		panel.add(MembershipTypeLabel);
+		CategoryLabel = new JLabel("Category:");
+		CategoryLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		CategoryLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		CategoryLabel.setBounds(10, 422, 456, 28);
+		panel.add(CategoryLabel);
 		
 		GenreTextField = new JTextField();
 		GenreTextField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -101,7 +111,7 @@ public class AddTitleView extends JFrame {
 		YearOfReleaseTextField.setBounds(10, 304, 456, 35);
 		panel.add(YearOfReleaseTextField);
 		
-		JLabel QuantityLabel = new JLabel("Quantity:");
+		QuantityLabel = new JLabel("Quantity:");
 		QuantityLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		QuantityLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		QuantityLabel.setBounds(10, 349, 456, 28);
@@ -113,24 +123,58 @@ public class AddTitleView extends JFrame {
 		QuantityTextField.setBounds(10, 374, 456, 35);
 		panel.add(QuantityTextField);
 		
-		JComboBox MembershipTypeBox = new JComboBox();
+		MembershipTypeBox = new JComboBox();
 		MembershipTypeBox.setMaximumRowCount(5);
 		MembershipTypeBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		MembershipTypeBox.setBounds(10, 448, 456, 35);
 		panel.add(MembershipTypeBox);
+		MembershipTypeBox.setModel(new DefaultComboBoxModel<>(MembershipPlans));
 		
-		JButton AddButton = new JButton("ADD");
+		AddButton = new JButton("ADD");
 		AddButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		AddButton.setBounds(290, 600, 120, 50);
 		panel.add(AddButton);
 		AddButton.addActionListener((ActionListener) ControllerInternalRef);
 		AddButton.setActionCommand("Add");
 		
-		JButton btnBack = new JButton("BACK");
+		btnBack = new JButton("BACK");
 		btnBack.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnBack.setBounds(60, 600, 120, 50);
 		panel.add(btnBack);
 		btnBack.addActionListener((ActionListener) ControllerInternalRef);
 		btnBack.setActionCommand("Back");
 	}
+	
+	public String GetTitle() {
+		return TitleTextField.getText().trim();
+	}
+	public String GetDirectorOrBand() {
+		return DirectorOrBandTextField.getText().trim();
+	}
+	public String GetGenre() {
+		return GenreTextField.getText().trim();
+	}
+	public String GetQuantity() {
+		return QuantityTextField.getText().trim();
+	}
+	public String GetYearOfRelease() {
+		return YearOfReleaseTextField.getText().trim();
+	}
+	public String GetMembershipType() {
+		//get the info from the combo box
+		String membershiptype = (String) MembershipTypeBox.getSelectedItem();
+		return membershiptype;
+	}
+
+	public void ClearFields() {
+		
+		String empty="";
+		TitleTextField.setText(empty);
+		GenreTextField.setText(empty);
+		DirectorOrBandTextField.setText(empty);
+		QuantityTextField.setText(empty);
+		YearOfReleaseTextField.setText(empty);
+		
+	}
 }
+

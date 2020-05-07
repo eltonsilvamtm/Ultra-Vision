@@ -10,7 +10,6 @@ import welcome.WelcomeController;
 
 public class AdmController implements ActionListener{
 	
-	private AdmModel Model;
 	private AdmView View;
 	
 	private WelcomeController ContrWelcome;
@@ -39,7 +38,7 @@ public class AdmController implements ActionListener{
 		}
 		
 		//redirect to the welcome page
-		if(e.getActionCommand().equals("Back")) {
+		if(e.getActionCommand().equals("Logout")) {
 			ContrWelcome = new WelcomeController();
 			View.dispose();
 		}

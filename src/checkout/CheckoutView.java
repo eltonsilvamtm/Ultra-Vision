@@ -22,27 +22,15 @@ public class CheckoutView extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JTextField textField;
+	
+	private JButton PayNowButton, GoBackButton;
+	
+	private JLabel lblCheckout, lblCartContains, lblTotal;
 
-	/**
-	 * Launch the application.
-	 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CheckoutView frame = new CheckoutView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public CheckoutView(CheckoutController controller) {
+		this.setLocationRelativeTo(null);
+		this.ControllerInternalRef = controller;
 		setTitle("Checkout");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,13 +45,13 @@ public class CheckoutView extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		JLabel lblCheckout = new JLabel("Checkout");
+		lblCheckout = new JLabel("Checkout");
 		lblCheckout.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCheckout.setFont(new Font("Arial", Font.PLAIN, 22));
 		lblCheckout.setBounds(10, 10, 466, 45);
 		panel.add(lblCheckout);
 		
-		JLabel lblCartContains = new JLabel("Cart:");
+		lblCartContains = new JLabel("Cart:");
 		lblCartContains.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblCartContains.setBounds(10, 65, 466, 35);
 		panel.add(lblCartContains);
@@ -76,21 +64,21 @@ public class CheckoutView extends JFrame {
 		scrollPane.setViewportView(table);
 		table.setFont(new Font("Arial", Font.PLAIN, 16));
 		
-		JButton PayNowButton = new JButton("PAY NOW");
+		PayNowButton = new JButton("PAY NOW");
 		PayNowButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		PayNowButton.setBounds(60, 428, 120, 50);
 		panel.add(PayNowButton);
 		PayNowButton.setActionCommand("PayNow");
 		PayNowButton.addActionListener((ActionListener) ControllerInternalRef);
 		
-		JButton GoBackButton = new JButton("GO BACK");
+		GoBackButton = new JButton("GO BACK");
 		GoBackButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		GoBackButton.setBounds(290, 428, 120, 50);
 		panel.add(GoBackButton);
 		GoBackButton.setActionCommand("GoBack");
 		GoBackButton.addActionListener((ActionListener) ControllerInternalRef);
 		
-		JLabel lblTotal = new JLabel("Total:");
+		lblTotal = new JLabel("Total:");
 		lblTotal.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblTotal.setBounds(10, 321, 466, 35);
 		panel.add(lblTotal);
@@ -103,5 +91,4 @@ public class CheckoutView extends JFrame {
 		panel.add(textField);
 		textField.setColumns(10);
 	}
-
 }

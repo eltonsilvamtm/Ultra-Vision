@@ -18,6 +18,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
+
+import net.proteanit.sql.DbUtils;
+
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
@@ -26,33 +29,21 @@ public class HomepageView extends JFrame {
 	private HomepageController ControllerInternalRef;
 
 	private JPanel contentPane;
+	
 	private JTextField SearchBarTextField;
+	
 	private JTable table;
-	private JTextField TotalTextField;
-	private JTextField InitialDateTextField;
-	private JTextField QuantityTextField;
-	private JTextField PriceTextField;
-
-	/**
-	 * Launch the application.
-	 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HomepageView frame = new HomepageView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	/**
-	 * Create the frame.
-	 */
+	
+	private JTextField TotalTextField, InitialDateTextField, QuantityTextField, PriceTextField;
+	
+	private JLabel lblNewLabel, lblInitialDate, TotalLabel, QuantityLabel, PriceLabel;
+	
+	private JButton SearchButton, AddToCartButton, CheckoutButton, ProfileButton;
+	
+	
 	public HomepageView(HomepageController controller) {
+		this.setLocationRelativeTo(null);
+		this.ControllerInternalRef = controller;
 		setResizable(false);
 		setTitle("Home");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,21 +58,21 @@ public class HomepageView extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Ultra-Vision");
+		lblNewLabel = new JLabel("Ultra-Vision");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 28));
-		lblNewLabel.setBounds(10, 10, 856, 79);
+		lblNewLabel.setBounds(10, 10, 531, 50);
 		panel.add(lblNewLabel);
 		
 		SearchBarTextField = new JTextField();
 		SearchBarTextField.setFont(new Font("Arial", Font.PLAIN, 16));
-		SearchBarTextField.setBounds(10, 99, 706, 50);
+		SearchBarTextField.setBounds(10, 99, 690, 50);
 		panel.add(SearchBarTextField);
 		SearchBarTextField.setColumns(10);
 		
-		JButton SearchButton = new JButton("Search");
+		SearchButton = new JButton("SEARCH");
 		SearchButton.setFont(new Font("Arial", Font.PLAIN, 22));
-		SearchButton.setBounds(736, 99, 130, 50);
+		SearchButton.setBounds(716, 97, 150, 50);
 		panel.add(SearchButton);
 		SearchButton.addActionListener((ActionListener) ControllerInternalRef);
 		SearchButton.setActionCommand("Search");
@@ -92,17 +83,19 @@ public class HomepageView extends JFrame {
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		//DefaultTableModel model = (DefaultTableModel) table.getModel();
+		table.setModel(DbUtils.resultSetToTableModel(controller.PopulateTable()));
 		
-		JButton AddToCartButton = new JButton("Add to Cart");
+		AddToCartButton = new JButton("ADD TO CART");
 		AddToCartButton.setFont(new Font("Arial", Font.PLAIN, 22));
-		AddToCartButton.setBounds(207, 593, 178, 50);
+		AddToCartButton.setBounds(208, 593, 193, 50);
 		panel.add(AddToCartButton);
 		AddToCartButton.addActionListener((ActionListener) ControllerInternalRef);
 		AddToCartButton.setActionCommand("AddToCart");
 		
-		JButton CheckoutButton = new JButton("Checkout");
+		CheckoutButton = new JButton("CHECKOUT");
 		CheckoutButton.setFont(new Font("Arial", Font.PLAIN, 22));
-		CheckoutButton.setBounds(666, 593, 130, 50);
+		CheckoutButton.setBounds(647, 593, 180, 50);
 		panel.add(CheckoutButton);
 		CheckoutButton.addActionListener((ActionListener) ControllerInternalRef);
 		CheckoutButton.setActionCommand("Checkout");
@@ -120,7 +113,7 @@ public class HomepageView extends JFrame {
 		panel_1.add(TotalTextField);
 		TotalTextField.setColumns(10);
 		
-		JLabel TotalLabel = new JLabel("Total:");
+		TotalLabel = new JLabel("Total:");
 		TotalLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		TotalLabel.setBounds(10, 274, 240, 24);
 		panel_1.add(TotalLabel);
@@ -132,7 +125,7 @@ public class HomepageView extends JFrame {
 		InitialDateTextField.setBounds(10, 85, 240, 35);
 		panel_1.add(InitialDateTextField);
 		
-		JLabel lblInitialDate = new JLabel("Initial date:");
+		lblInitialDate = new JLabel("Initial date:");
 		lblInitialDate.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblInitialDate.setBounds(10, 58, 240, 24);
 		panel_1.add(lblInitialDate);
@@ -144,7 +137,7 @@ public class HomepageView extends JFrame {
 		QuantityTextField.setBounds(10, 157, 240, 35);
 		panel_1.add(QuantityTextField);
 		
-		JLabel QuantityLabel = new JLabel("Quantity:");
+		QuantityLabel = new JLabel("Quantity:");
 		QuantityLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		QuantityLabel.setBounds(10, 130, 240, 24);
 		panel_1.add(QuantityLabel);
@@ -156,16 +149,29 @@ public class HomepageView extends JFrame {
 		PriceTextField.setBounds(10, 229, 240, 35);
 		panel_1.add(PriceTextField);
 		
-		JLabel PriceLabel = new JLabel("Price:");
+		PriceLabel = new JLabel("Price:");
 		PriceLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		PriceLabel.setBounds(10, 202, 240, 24);
 		panel_1.add(PriceLabel);
 		
-		JButton ProfileButton = new JButton("Profile");
+		ProfileButton = new JButton("SETTINGS");
 		ProfileButton.setFont(new Font("Arial", Font.PLAIN, 22));
-		ProfileButton.setBounds(10, 27, 100, 50);
+		ProfileButton.setBounds(540, 13, 150, 50);
 		panel.add(ProfileButton);
 		ProfileButton.addActionListener((ActionListener) ControllerInternalRef);
-		ProfileButton.setActionCommand("Profile");
+		ProfileButton.setActionCommand("Settings");
+		
+		JButton LogoutButton = new JButton("LOGOUT");
+		LogoutButton.setFont(new Font("Arial", Font.PLAIN, 22));
+		LogoutButton.setBounds(716, 13, 150, 50);
+		panel.add(LogoutButton);
+		LogoutButton.addActionListener((ActionListener) ControllerInternalRef);
+		LogoutButton.setActionCommand("Logout");
 	}
+	
+	public String GetSearchArgument() {
+		return SearchBarTextField.getText().trim();
+	}
+	
+	
 }

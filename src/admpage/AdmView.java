@@ -19,9 +19,13 @@ public class AdmView extends JFrame {
 	private AdmController ControllerInternalRef;
 
 	private JPanel contentPane;
+	
+	private JButton CreateProfileButton, EditProfileButton, BackButton, AddNewTitleButton;
 
 
 	public AdmView(AdmController controller) {
+		this.setLocationRelativeTo(null);
+		this.ControllerInternalRef = controller;
 		setTitle("Adiministrator Menu");
 		setResizable(false);
 		setBackground(Color.DARK_GRAY);
@@ -38,28 +42,28 @@ public class AdmView extends JFrame {
 		contentPane.add(AdmpagePanel, BorderLayout.CENTER);
 		AdmpagePanel.setLayout(null);
 		
-		JButton CreateProfileButton = new JButton("CREATE PROFILE");
+		CreateProfileButton = new JButton("CREATE PROFILE");
 		CreateProfileButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		CreateProfileButton.setBounds(83, 73, 250, 50);
 		AdmpagePanel.add(CreateProfileButton);
 		CreateProfileButton.addActionListener((ActionListener) ControllerInternalRef);
 		CreateProfileButton.setActionCommand("Create");
 		
-		JButton EditProfileButton = new JButton("EDIT PROFILE");
+		EditProfileButton = new JButton("EDIT PROFILE");
 		EditProfileButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		EditProfileButton.setBounds(83, 136, 250, 50);
 		AdmpagePanel.add(EditProfileButton);
 		EditProfileButton.addActionListener((ActionListener) ControllerInternalRef);
 		EditProfileButton.setActionCommand("Edit");
 		
-		JButton BackButton = new JButton("BACK");
+		BackButton = new JButton("LOGOUT");
 		BackButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		BackButton.setBounds(83, 199, 250, 50);
 		AdmpagePanel.add(BackButton);
 		BackButton.addActionListener((ActionListener) ControllerInternalRef);
-		BackButton.setActionCommand("Back");
+		BackButton.setActionCommand("Logout");
 		
-		JButton AddNewTitleButton = new JButton("ADD NEW TITLE");
+		AddNewTitleButton = new JButton("ADD NEW TITLE");
 		AddNewTitleButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		AddNewTitleButton.setBounds(83, 10, 250, 50);
 		AdmpagePanel.add(AddNewTitleButton);
