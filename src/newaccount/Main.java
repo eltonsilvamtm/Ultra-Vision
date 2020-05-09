@@ -1,11 +1,10 @@
-package homepage;
+package newaccount;
 
 /*public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new HomepageController();
-
+		new NewAccountController();
 	}
 
 }*/

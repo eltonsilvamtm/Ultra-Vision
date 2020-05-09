@@ -2,6 +2,7 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,9 +15,9 @@ import javax.swing.JOptionPane;
 
 public class Connect extends JFrame{
 	
-	private String dbServer = "jdbc:mysql://localhost:3306/ultravision";
+	private String dbServer = "jdbc:mysql://127.0.0.1:3306/ultravision?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow";
     private String user = "root";
-    private String password = "beatles.506070";
+    private String password = "root081190";
     private Connection conn = null;
     private Statement stmt = null;
     private ResultSet rs;
@@ -62,12 +63,11 @@ public class Connect extends JFrame{
     public boolean ExecuteQuery(String query) {
     	
     	boolean result = false;
+    	
     	try{
             // Execute the query
-            rs = stmt.executeQuery(query);
-            //requesting whether the query was successful or not
-            result = rs.next();
-
+    		result = stmt.execute(query);
+    		
             // Calling the method in charge of closing the connections
             CloseConnection();
         }
@@ -103,19 +103,12 @@ public class Connect extends JFrame{
             // Execute the query
             rs = stmt.executeQuery(query);
             
-            //requesting whether the query was successful or not
-            if(rs.next()) {
-            	//fetching the data
-            	while(rs.next()){	
-              		data.add( rs.getString("name"));
+            	while(rs.next()){
+            		data.add( rs.getString("loyalty_card"));
+            		data.add( rs.getString("membership_type"));
+              		data.add( rs.getString("username"));
               		data.add( rs.getString("surname"));
               		data.add( rs.getString("email"));
-              		data.add( rs.getString("loyalty_card"));
-            	}
-            }
-            //account not found
-            else {
-            	JOptionPane.showMessageDialog(this, "Account could not be found!","Account not found",JOptionPane.ERROR_MESSAGE);
             }
 
             // Calling the method in charge of closing the connections
@@ -149,12 +142,12 @@ public class Connect extends JFrame{
     public ArrayList<String> ReadTitleData(String query) {
     	
     	try{
+    		//conn = DriverManager.getConnection(dbServer, user, password) ;
+    		PreparedStatement pst = conn.prepareStatement(query);
+    		rs = pst.executeQuery(query);
             // Execute the query
-            rs = stmt.executeQuery(query);
             
-            //requesting whether the query was successful or not
-            if(rs.next()) {
-            	//fetching the data
+              	//fetching the data
             	while(rs.next()){
             		data.add( rs.getString("title"));
             		data.add( rs.getString("genre"));
@@ -163,14 +156,10 @@ public class Connect extends JFrame{
             		data.add( rs.getString("quantity"));
             		data.add( rs.getString("membership_type"));
             	}
-            }
-            //account not found
-            else {
-            	JOptionPane.showMessageDialog(this, "Title could not be found!","Title not found",JOptionPane.ERROR_MESSAGE);
-            }
 
             // Calling the method in charge of closing the connections
             CloseConnection();
+            
         }
         catch( SQLException se ){
             System.out.println( "SQL Exception:" ) ;

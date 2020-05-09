@@ -31,8 +31,6 @@ public class HomepageController extends Connect implements ActionListener{
 	public HomepageController() {
 		View = new HomepageView(this);
 		View.setVisible(true);
-		//populate the title table every time the window is called
-		PopulateTable();
 	}
 	
 	
@@ -74,19 +72,18 @@ public class HomepageController extends Connect implements ActionListener{
 	
 	//populate the table with all the items available on the database
 	protected ResultSet PopulateTable() {
-		
-		query = "SELECT * FROM titles.ultravision;";
-		
-		return (ResultSet) DBConnection.ReadTitleData(query);
+		ResultSet rs = null;
+		query = "SELECT * FROM ultravision.titles;";
+		//rs = DBConnection.ReadTitleData(query);
+		return rs;
 	}
 
 	//search for one item on the database
-	protected ResultSet PerformSearch(String argument) {
+	protected ArrayList<String> PerformSearch(String argument) {
 		
-		ValidateInput();
 		query = "SELECT * FROM titles.ultravision WHERE CONCAT(title, genre, director_band) LIKE '%" + argument + "%'";
         
-		return (ResultSet) DBConnection.ReadTitleData(query);
+		return DBConnection.ReadTitleData(query);
 	}
 
 	private void ValidateInput() {

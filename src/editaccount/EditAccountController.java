@@ -14,7 +14,7 @@ import welcome.WelcomeController;
 public class EditAccountController extends Connect implements ActionListener {
 	
 	protected EditAccountView View;
-	private Connect DBConnection;
+	private Connect DBConnection = new Connect();
 	private AdmController ContrAdm;
 
 	
@@ -34,7 +34,7 @@ public class EditAccountController extends Connect implements ActionListener {
 		
 		
 		if(e.getActionCommand().equals("Search")) {
-			
+			//validate
 			SearchButtonPressed();
 			PopulateFields();
 		}
@@ -49,10 +49,12 @@ public class EditAccountController extends Connect implements ActionListener {
 		
 		//updates the record and asks whether you want to update another customer
 		if(e.getActionCommand().equals("Update")) {
+			boolean validate = false;
+			validate = ValidateFields();
+			if(validate) {
+				UpdateButtonPressed();
+			}
 			
-			ValidateFields();
-			UpdateButtonPressed();
-			UpdateAnotherCustomer();
 		}
 		
 	}
@@ -67,18 +69,11 @@ public class EditAccountController extends Connect implements ActionListener {
 		}
 		
 		//search the database by name
-		else if(argument.matches("([A-Z]|[a-z])")) {
-			
-			query = "SELECT name, surname, email, loyalty_card FROM users.ultravision WHERE name = '" + argument + "'";
+		else{
+			query = "SELECT * FROM ultravision.users WHERE username LIKE '%" 
+					+ argument + "%' OR surname LIKE '%" + argument + "%' OR loyalty_card LIKE '%" + argument + "%';";
 			AccountInfo = DBConnection.ReadCustomerData(query);
-						
-		}
-		
-		//search the database by loyalty card
-		else if(argument.matches("(\\d{4}[-. ]?){4}|\\d{4}[-. ]?\\d{6}[-. ]?\\d{5}")) {
-			
-			query = "SELECT name, surname, email, loyalty_card FROM users.ultravision WHERE loyalty_card = " + argument + "";
-			AccountInfo = DBConnection.ReadCustomerData(query);
+			System.out.println(AccountInfo);
 			
 		}
 	}
@@ -87,25 +82,45 @@ public class EditAccountController extends Connect implements ActionListener {
 	//this method will populate the text fields with the information available on the database
 	private void PopulateFields() {
 		//clear residual data before inputing new data	
+		int index = 0;
 		View.ClearFields();
-		View.WriteName(AccountInfo.get(0));
-		View.WriteSurname(AccountInfo.get(1));
-		View.WriteEmail(AccountInfo.get(2));
-		View.WriteLoyaltyCard(AccountInfo.get(3));
+		if(AccountInfo.get(1) == "MusicLover") {
+			index = 0;
+		}
+		else if(AccountInfo.get(1) == "VideoLover") {
+			index = 1;
+		}
+		else if(AccountInfo.get(1) == "TVLover") {
+			index = 3;
+		}
+		else if(AccountInfo.get(1) == "Premium") {
+			index = 4;
+		}
+		View.WriteLoyaltyCard(AccountInfo.get(0));
+		View.WriteMembershipType(index);
+		View.WriteName(AccountInfo.get(2));
+		View.WriteSurname(AccountInfo.get(3));
+		View.WriteEmail(AccountInfo.get(4));
+		
 		}
 
 
-	private void ValidateFields() {
+	private boolean ValidateFields() {
+		
+		boolean validation = false;
 
 		//error message if one of the fields is empty
 		if(View.GetName().isEmpty() || View.GetSurname().isEmpty() || View.GetEmail().isEmpty()) {
 			JOptionPane.showMessageDialog(View, "All fields are required.","Empty Fields",JOptionPane.ERROR_MESSAGE);
 		}
 		//error message if it does not match the correct email format
-		if(!View.GetEmail().matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")) {
+		else if(!View.GetEmail().matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")) {
 			JOptionPane.showMessageDialog(View, "Please enter a valid email.","Email required",JOptionPane.ERROR_MESSAGE);
 		}
-		
+		else {
+			validation = true;
+		}
+		return validation;
 	}
 
 
@@ -114,34 +129,29 @@ public class EditAccountController extends Connect implements ActionListener {
 	private void UpdateButtonPressed() {
 		
 		boolean queryresult;
-		query = "UPDATE users.ultravision SET name = '" + View.GetName() + 
+		query = "UPDATE users.ultravision SET username = '" + View.GetName() + 
 				"', surname = '" + View.GetSurname() + "', email = '"
 				+ View.GetEmail() + "WHERE loyalty_card = '" + View.GetLoyaltyCard();
 		
 		queryresult = DBConnection.ExecuteQuery(query);
 		
-		if(queryresult) {
-			JOptionPane.showMessageDialog(View, "Account successfuly updated!","Account updated",JOptionPane.INFORMATION_MESSAGE);
+		if(!queryresult) {
+			int yesorno = JOptionPane.showConfirmDialog(View, "The account " + View.GetLoyaltyCard() + " was updated! \n "
+					+ " Would you like to search another account?"," Account updated!",JOptionPane.YES_NO_OPTION);
+			//0 means that the staff wants to update another account 
+			if(yesorno == 0) {
+				View.ClearFields();
+			}
+			//1 mean that he does not want to update another account
+			else {
+				ContrAdm = new AdmController();
+				View.dispose();
+			}
 		}
 		else {
 			JOptionPane.showMessageDialog(View, "Update not completed!","Updated failure",JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
-	
-	
-	private void UpdateAnotherCustomer() {
-		
-		int yesorno = JOptionPane.showConfirmDialog(View, "Would you like to update another customer?","Updated customer",JOptionPane.YES_NO_OPTION);
-		//0 means yes
-		if(yesorno == 0) {
-			View.ClearFields();
-		}
-		else {
-			ContrAdm = new AdmController();
-			View.dispose();
-		}
-	}
-
 	
 }

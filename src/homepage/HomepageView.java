@@ -10,6 +10,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -84,7 +85,9 @@ public class HomepageView extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		//DefaultTableModel model = (DefaultTableModel) table.getModel();
-		table.setModel(DbUtils.resultSetToTableModel(controller.PopulateTable()));
+		//ResultSet rs = controller.PopulateTable();
+		//table.setModel(DbUtils.resultSetToTableModel(rs));
+		
 		
 		AddToCartButton = new JButton("ADD TO CART");
 		AddToCartButton.setFont(new Font("Arial", Font.PLAIN, 22));

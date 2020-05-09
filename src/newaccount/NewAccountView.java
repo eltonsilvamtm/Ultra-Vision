@@ -37,7 +37,7 @@ public class NewAccountView extends JFrame {
 	private JLabel NameLabel;
 	private JLabel SurnameLabel;
 	private JLabel EmailLabel;
-	private JComboBox<Plans> comboBox;
+	private JComboBox<Plans> MembershipTypeBox;
 	private JLabel lblNewLabel;
 
 
@@ -113,12 +113,12 @@ public class NewAccountView extends JFrame {
 		NameTextField.setBounds(10, 86, 310, 35);
 		panel.add(NameTextField);
 		
-		comboBox = new JComboBox<Plans>();
-		comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-		comboBox.setMaximumRowCount(4);
-		comboBox.setBounds(10, 296, 310, 35);
-		panel.add(comboBox);
-		comboBox.setModel(new DefaultComboBoxModel<>(MembershipPlans));
+		MembershipTypeBox = new JComboBox<Plans>();
+		MembershipTypeBox.setFont(new Font("Arial", Font.PLAIN, 16));
+		MembershipTypeBox.setMaximumRowCount(4);
+		MembershipTypeBox.setBounds(10, 296, 310, 35);
+		panel.add(MembershipTypeBox);
+		MembershipTypeBox.setModel(new DefaultComboBoxModel<>(MembershipPlans));
 		
 		lblNewLabel = new JLabel("Membership Type:");
 		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -135,6 +135,11 @@ public class NewAccountView extends JFrame {
 	}
 	public String GetEmail() {
 		return EmailTextField.getText().trim();
+	}
+	public String GetMembershipType() {
+		//get the info from the combo box
+		String membershiptype =  MembershipTypeBox.getSelectedItem().toString();
+		return membershiptype;
 	}
 
 	public void ClearFields() {

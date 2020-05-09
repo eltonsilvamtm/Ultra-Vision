@@ -162,7 +162,7 @@ public class AddTitleView extends JFrame {
 	}
 	public String GetMembershipType() {
 		//get the info from the combo box
-		String membershiptype = (String) MembershipTypeBox.getSelectedItem();
+		String membershiptype =  MembershipTypeBox.getSelectedItem().toString();
 		return membershiptype;
 	}
 

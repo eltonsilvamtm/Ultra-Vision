@@ -14,7 +14,7 @@ public class NewAccountController extends Connect implements ActionListener{
 	
 	protected NewAccountView View;
 	private AdmController ContrAdm;
-	private Connect DBConnection;
+	private Connect DBConnection = new Connect();
 	
 	private String[] NewAccount = new String[4];
 	private String query;
@@ -36,26 +36,30 @@ public class NewAccountController extends Connect implements ActionListener{
 		
 		//create a new account and redirect to as pop up asking if you want to create another account
 		if(e.getActionCommand().equals("Create")) {
+			boolean validate = false;
+			validate = ValidateFields();
+			if(validate) {
+				CreateButtonPressed();
+			}
 			
-			ValidateFields();
-			CreateButtonPressed();
-			CreateAnotherAccount();
 		}
 	}
 
 	
 	
-	private void ValidateFields() {
-		
+	private boolean ValidateFields() {
+		boolean validation = false;
 				//error message if one of the fields is empty
 				if(View.GetName().isEmpty() || View.GetSurname().isEmpty() || View.GetEmail().isEmpty()) {
 					JOptionPane.showMessageDialog(View, "All fields are required.","Empty Fields",JOptionPane.ERROR_MESSAGE);
 				}
 				//error message if it does not match the correct email format
-				if(!View.GetEmail().matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")) {
+				else if(!View.GetEmail().matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")) {
 					JOptionPane.showMessageDialog(View, "Please enter a valid email.","Email required",JOptionPane.ERROR_MESSAGE);
+				} else {
+					validation = true;
 				}
-		
+		return validation;
 	}
 	
 
@@ -63,33 +67,28 @@ public class NewAccountController extends Connect implements ActionListener{
 		
 		boolean queryresult;
 		loyalty_card = GetLoyaltyCard();
-		query = "INSERT INTO users.ultravision (name, surname, email, loyalty_card) VALUES ('"
-		+ View.GetName() + "', '" + View.GetSurname() + "', '" + View.GetEmail() + "', '" + loyalty_card +")";
+		
+		query = "INSERT INTO ultravision.users (loyalty_card, membership_type, username, surname, email) VALUES ('"
+		+ loyalty_card + "', '" + View.GetMembershipType() + "', '" + View.GetName() + "', '" + View.GetSurname() + "', '" + View.GetEmail() +"');";
 		
 		queryresult = DBConnection.ExecuteQuery(query);
 		
-		if(queryresult) {
-			JOptionPane.showMessageDialog(View, "Account successfuly created!","Account updated",JOptionPane.INFORMATION_MESSAGE);
+		//if query result is true it means that the account was updated
+		if(!queryresult) {
+			int yesorno = JOptionPane.showConfirmDialog(View, "Account succesfully created! Your Loyalty card number is: \n" + loyalty_card +
+							"\n Would you like to create another account?","Welcome!",JOptionPane.YES_NO_OPTION);
+			//0 means create another account and 1 means that he is done creating accounts
+			if(yesorno == 0) {
+				View.ClearFields();
+			}
+			else {
+				ContrAdm = new AdmController();
+				View.dispose();
+			}
 		}
+		//if the account cannot be created for an external reason
 		else {
-			JOptionPane.showMessageDialog(View, "There was an error trying to create a new account!","Insert Into failure",JOptionPane.ERROR_MESSAGE);
-		}
-		
-	}
-	
-	
-	private void CreateAnotherAccount() {
-		
-		int yesorno = JOptionPane.showConfirmDialog(View, "Would you like to create another account?","Updated customer",JOptionPane.YES_NO_OPTION);
-		//0 means yes
-		if(yesorno == 0) {
-			JOptionPane.showMessageDialog(View, loyalty_card ,"Loyalty card number:",JOptionPane.INFORMATION_MESSAGE);
-			View.ClearFields();
-		}
-		else {
-			JOptionPane.showMessageDialog(View, loyalty_card ,"Loyalty card number:",JOptionPane.INFORMATION_MESSAGE);
-			ContrAdm = new AdmController();
-			View.dispose();
+			JOptionPane.showMessageDialog(View, "There was an error trying to create the account!","Insert Into failure",JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
@@ -98,14 +97,15 @@ public class NewAccountController extends Connect implements ActionListener{
 	//this method will create a simple new membership card
 	private String GetLoyaltyCard() {
 		String MyCard;
-		double max = 999999999999999.9;
-		double min = 100000000000000.0;
-		double cardnumber = (Math.random()*((max-min)+1))+min;
-		//casting the card number into a string
-		MyCard = Double.toString(cardnumber);
+		int max = 9;
+		int min = 1;
+		double cardnumber =  ((Math.random()*((max-min)+1))+min);
+		//casting the card number into a string and setting to be a maximum of 12 numbers
+		MyCard = Double.toString(cardnumber).replace(".", "").substring(0, 12);
 		//removing the dot of the double number
-		MyCard.trim().replaceAll(".", "");
+		MyCard.trim().replaceFirst(".", "");
 		return MyCard;
+		
 	}
 
 

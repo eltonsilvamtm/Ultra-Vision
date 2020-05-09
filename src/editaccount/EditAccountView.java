@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import enums.Plans;
 
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -35,6 +37,8 @@ public class EditAccountView extends JFrame {
 	private JLabel SearchCustomerLabel, NameLabel, SurnameLabel, EmailLabel, LoyaltyCardLabel;
 	
 	private JButton SearchButton, UpdateButton, BackButton;
+	
+	private JComboBox<Plans> comboBox;
 
 	
 	public EditAccountView(EditAccountController controller) {
@@ -154,7 +158,7 @@ public class EditAccountView extends JFrame {
 		lblMembershipType.setBounds(10, 316, 256, 27);
 		panel.add(lblMembershipType);
 		
-		JComboBox<Plans> comboBox = new JComboBox<Plans>();
+		comboBox = new JComboBox<Plans>();
 		comboBox.setMaximumRowCount(4);
 		comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		comboBox.setBounds(10, 339, 310, 35);
@@ -182,18 +186,19 @@ public class EditAccountView extends JFrame {
 	public void WriteName(String data) {
 		NameTextField.setText(data);
 	}
-	
 	public void WriteSurname(String data) {
 		SurnameTextField.setText(data);
 	}
-	
 	public void WriteEmail(String data) {
 		EmailTextField.setText(data);
 	}
-	
 	public void WriteLoyaltyCard(String data) {
 		LoyaltyCardTextField.setText(data);
 	}
+	public void WriteMembershipType(int index) {
+		comboBox.setSelectedIndex(index);
+	}
+	
 	
 	//clear all fields
 	public void ClearFields() {
