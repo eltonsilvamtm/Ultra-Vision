@@ -47,8 +47,7 @@ import java.awt.event.ActionEvent;
 public class HomepageView extends JFrame{
 	
 	private HomepageController ControllerInternalRef;
-	private Connect DBConnection = new Connect();
-	private static WelcomeController ContrWelcome;
+	private static Connect DBConnection = new Connect();
 
 	private static JPanel contentPane;
 	private JTextField SearchBarTextField;
@@ -64,6 +63,7 @@ public class HomepageView extends JFrame{
 	private int quantity;
 	private int price = 3;
 	private static int total = 0;
+	private static String card;
 	
 	
 	public HomepageView(HomepageController controller) {
@@ -319,11 +319,28 @@ public class HomepageView extends JFrame{
 		panel.add(lblCheckout);
 	}
 	
-	//display customer's order details
+	/**
+	 * display customer's order details
+	 */
 	protected static void ThankYou() {
-		String finalmessage = "Your order total is: " + total;
-		JOptionPane.showMessageDialog(contentPane, finalmessage, "Thank you", JOptionPane.INFORMATION_MESSAGE);
-		ContrWelcome = new WelcomeController();
+		String finalmessage = "Your order total is: €" + total + " \n Please enter your card number:";
+		card = JOptionPane.showInputDialog(contentPane, finalmessage, "Thank you", JOptionPane.INFORMATION_MESSAGE);
+		ValidateField();
+	}
+
+	private static void ValidateField() {
+		//check whether the card number format is correct
+		if(card.isEmpty() || !card.matches("^\\d{6}\\d{2}\\d{4}$")) {
+			JOptionPane.showMessageDialog(contentPane, "Please enter a valid card.","12 digit card required",JOptionPane.ERROR_MESSAGE);
+		}else {
+			boolean isordercompleted;
+			String query = "SELECT loyalty_card FROM ultravision.users WHERE loyalty_card = '" + card + "';";
+			isordercompleted = DBConnection.ReadCustomerData(query).isEmpty();
+			if(isordercompleted) {
+				JOptionPane.showMessageDialog(contentPane, "Thank you for your order","Thank you!",JOptionPane.ERROR_MESSAGE);
+				System.exit(0);
+			}
+		}
 		
 	}
 
