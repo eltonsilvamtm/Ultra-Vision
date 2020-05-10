@@ -1,8 +1,8 @@
 package welcome;
 
-//import welcome.WelcomeController;
+/*import welcome.WelcomeController;
 
-/*public class Main {
+public class Main {
 
 	public static void main(String[] args) {
 		
@@ -10,4 +10,5 @@ package welcome;
 
 	}
 
-}*/
+}
+*/

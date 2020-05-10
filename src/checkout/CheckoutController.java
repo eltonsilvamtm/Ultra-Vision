@@ -2,19 +2,29 @@ package checkout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.table.DefaultTableModel;
+
+import database.Connect;
 import homepage.HomepageController;
+import welcome.WelcomeController;
 
-public class CheckoutController implements ActionListener{
+public class CheckoutController extends Connect implements ActionListener{
 	
-	private CheckoutModel Model;
 	private CheckoutView View;
+	private Connect DBConnection = new Connect();
 	private HomepageController ContrHomepage;
+	private WelcomeController ContrWelcome;
+	
 	
 	public CheckoutController() {
+		
 		View = new CheckoutView(this);
 		View.setVisible(true);
+		
 	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -27,17 +37,10 @@ public class CheckoutController implements ActionListener{
 		
 		//redirects the user to a thank you pop up box
 		if(e.getActionCommand().equals("PayNow")) {
-			new ThankYou();
+			ContrWelcome = new WelcomeController();
 			View.dispose();
 		}
 		
 	}
 
 }
-
-	class ThankYou extends CheckoutController{
-	
-		public ThankYou() {
-			
-		}
-	}

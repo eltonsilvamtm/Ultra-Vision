@@ -182,7 +182,8 @@ public class EditAccountView extends JFrame {
 		return LoyaltyCardTextField.getText().trim();
 	}
 	
-	//writing into text fields methods
+	//writing into text fields methods (setters)
+	
 	public void WriteName(String data) {
 		NameTextField.setText(data);
 	}
@@ -200,7 +201,9 @@ public class EditAccountView extends JFrame {
 	}
 	
 	
-	//clear all fields
+	/**
+	 * clear all fields
+	 */
 	public void ClearFields() {
 		String empty="";
 		SearchCustomerTextField.setText(empty);

@@ -56,12 +56,12 @@ public class AdmView extends JFrame {
 		EditProfileButton.addActionListener((ActionListener) ControllerInternalRef);
 		EditProfileButton.setActionCommand("Edit");
 		
-		BackButton = new JButton("LOGOUT");
+		BackButton = new JButton("GO BACK");
 		BackButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		BackButton.setBounds(83, 199, 250, 50);
 		AdmpagePanel.add(BackButton);
 		BackButton.addActionListener((ActionListener) ControllerInternalRef);
-		BackButton.setActionCommand("Logout");
+		BackButton.setActionCommand("Back");
 		
 		AddNewTitleButton = new JButton("ADD NEW TITLE");
 		AddNewTitleButton.setFont(new Font("Arial", Font.PLAIN, 16));

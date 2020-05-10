@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import admpage.AdmController;
 import database.Connect;
 import homepage.HomepageController;
+import homepage.HomepageView;
 
 
 public class WelcomeController extends Connect implements ActionListener, KeyListener{
@@ -22,15 +23,19 @@ public class WelcomeController extends Connect implements ActionListener, KeyLis
 	private HomepageController ControllerHomep;
 	private AdmController ContrAdm;
 	
+	
 	private String query;
 	
 	
 	public WelcomeController() {
 		View = new WelcomeView(this);
 		View.setVisible(true);
+		
 	}
 	
-
+	/**
+	 * checks the database to match a user loyalty card
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -38,7 +43,7 @@ public class WelcomeController extends Connect implements ActionListener, KeyLis
 		if(e.getActionCommand().equals("Search")) {
 			
 			//check whether the card number format is correct
-			if(View.GetLoyaltyCard().isEmpty() || !View.GetLoyaltyCard().matches("(\\d{4}[-. ]?){4}|\\d{4}[-. ]?\\d{6}[-. ]?\\d{5}")) {
+			if(View.GetLoyaltyCard().isEmpty() || !View.GetLoyaltyCard().matches("^\\d{6}\\d{2}\\d{4}$")) {
 				JOptionPane.showMessageDialog(View, "Please enter a valid card.","16 digit card required",JOptionPane.ERROR_MESSAGE);
 			}else {
 				
@@ -52,7 +57,7 @@ public class WelcomeController extends Connect implements ActionListener, KeyLis
 		
 		boolean queryresult;
 		query = "SELECT name, surname, email FROM users.ultravision WHERE loyalty_card = '" + View.GetLoyaltyCard() + "'";
-		queryresult = DBConnection.ExecuteQuery(query);
+		queryresult = DBConnection.ReadCustomerData(query).isEmpty();
 		
 		if(queryresult) {
 			ControllerHomep = new HomepageController();

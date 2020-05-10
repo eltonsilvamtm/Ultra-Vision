@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import admpage.AdmController;
 import checkout.CheckoutController;
@@ -22,12 +24,16 @@ public class HomepageController extends Connect implements ActionListener{
 	private CheckoutController ControllerCheckout;
 	private AdmController ContrAdm;
 	private WelcomeController ContrWelcome;
-	private Connect DBConnection;
+	private Connect DBConnection = new Connect();
 	
-	private String query;
+
 	private ArrayList<String> titles = new ArrayList<String>();
+	private static ArrayList<Integer> rowselected = new ArrayList<Integer>();
 	
 	
+	/**
+	 * Homepage constructor (will call the GUI every time the user interaction leads to the main window)
+	 */
 	public HomepageController() {
 		View = new HomepageView(this);
 		View.setVisible(true);
@@ -35,7 +41,9 @@ public class HomepageController extends Connect implements ActionListener{
 	
 	
 
-	//here all the actions performed by the buttons on the HomepageView class will be treated
+	/**
+	 * here all the actions performed by the buttons on the HomepageView class will be treated
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -45,53 +53,44 @@ public class HomepageController extends Connect implements ActionListener{
 			View.dispose();
 		}
 		
-		//will perform the search on the database
-		if(e.getActionCommand().equals("Search")) {
-			ValidateInput();
-			PerformSearch(View.GetSearchArgument());
-		}
-		
-		//this will add the chosen product to the cart
-		if(e.getActionCommand().equals("AddToCart")) {
-			
-		}
-		
 		//redirect to the checkout page
 		if(e.getActionCommand().equals("Checkout")) {
+			
 			ControllerCheckout = new CheckoutController();
 			View.dispose();
 		}
 		
-		if(e.getActionCommand().equals("Logout")) {
-			ContrWelcome = new WelcomeController();
-			View.dispose();
-		}
-		
 	}
 	
 	
-	//populate the table with all the items available on the database
-	protected ResultSet PopulateTable() {
-		ResultSet rs = null;
-		query = "SELECT * FROM ultravision.titles;";
-		//rs = DBConnection.ReadTitleData(query);
-		return rs;
+	public ArrayList<Integer> AddToCart(int selectedRow) {
+		rowselected.add(selectedRow);
+		System.out.println(rowselected);
+		return rowselected;
+	}
+	
+	public static ArrayList<Integer> GetArray() {
+		//String values = rowselected.toString();
+		return rowselected;
 	}
 
-	//search for one item on the database
-	protected ArrayList<String> PerformSearch(String argument) {
+	//in charge of validate the user input according to the necessity, 
+	//in this case as the table refreshes constantly the only major validation is field emptiness
+	private boolean ValidateInput() {
+		boolean validation = false;
 		
-		query = "SELECT * FROM titles.ultravision WHERE CONCAT(title, genre, director_band) LIKE '%" + argument + "%'";
-        
-		return DBConnection.ReadTitleData(query);
+			//error message if one of the fields is empty
+			if(View.GetSearchArgument().isEmpty()) {
+				JOptionPane.showMessageDialog(View, "Please enter a term to be searched","Empty Fields",JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				validation = true;
+			}
+		
+		return validation;
 	}
-
-	private void ValidateInput() {
-		//error message if one of the fields is empty
-		if(View.GetSearchArgument().isEmpty()) {
-			JOptionPane.showMessageDialog(View, "Please enter a term to be searched","Empty Fields",JOptionPane.ERROR_MESSAGE);
-		}
-	}
+	
+	
 	
 
 }

@@ -46,7 +46,10 @@ public class NewAccountController extends Connect implements ActionListener{
 	}
 
 	
-	
+	/**
+	 * treats user inputs checking whether they are empty or does not contain email pattern 
+	 * @return true or false
+	 */
 	private boolean ValidateFields() {
 		boolean validation = false;
 				//error message if one of the fields is empty
@@ -62,7 +65,10 @@ public class NewAccountController extends Connect implements ActionListener{
 		return validation;
 	}
 	
-
+	/**
+	 * this method inserts a new user into the database system
+	 * it also checks whether the query was successful or not 
+	 */
 	private void CreateButtonPressed() {
 		
 		boolean queryresult;
@@ -94,7 +100,10 @@ public class NewAccountController extends Connect implements ActionListener{
 	}
 	
 
-	//this method will create a simple new membership card
+	/**
+	 * this method will create a simple new membership card
+	 * @return the loyalty card number
+	 */
 	private String GetLoyaltyCard() {
 		String MyCard;
 		int max = 9;

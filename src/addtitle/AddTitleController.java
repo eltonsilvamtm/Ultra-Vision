@@ -17,12 +17,18 @@ public class AddTitleController implements ActionListener{
 	private String NewTitle[] = new String[6];
 	private String query;
 	
+	/**
+	 * main constructor, will call the add title view whenever necessary
+	 */
 	public AddTitleController() {
 		View = new AddTitleView(this);
 		View.setVisible(true);
 	}
 	
-	
+	/**
+	 * will check the buttons actions of the window, will redirect the 
+	 * user to another windows depending on the action performed
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -46,7 +52,11 @@ public class AddTitleController implements ActionListener{
 	}
 	
 	
-	
+	/**
+	 * will validate all the user inputs of the add titles section, 
+	 * check if the fields are empty and if some of the fields matches a pre required pattern
+	 * @return true or false
+	 */
 	private boolean ValidateFields() {
 		boolean validation = false;
 		//display pop up error message if there are any empty fields
@@ -71,7 +81,10 @@ public class AddTitleController implements ActionListener{
 		return validation;
 	}
 
-
+	/**
+	 * this method will be in charge of inserting the new title into the database.
+	 * it also checks whether the title was added or not and give a proper reply to the user
+	 */
 	private void AddButtonPressed() {
 		
 		boolean queryresult;
@@ -90,7 +103,9 @@ public class AddTitleController implements ActionListener{
 		}
 	}
 
-
+	/**
+	 * this method will ask the user whether if he wants to add another title or not
+	 */
 	private void AddAnotherTitle() {
 		
 		int decision = JOptionPane.showConfirmDialog(View, "Would you like to add another title?","Add another title",JOptionPane.YES_NO_OPTION );

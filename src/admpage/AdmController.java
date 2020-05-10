@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import addtitle.AddTitleController;
 import editaccount.EditAccountController;
+import homepage.HomepageController;
 import newaccount.NewAccountController;
 import welcome.WelcomeController;
 
@@ -16,6 +17,7 @@ public class AdmController implements ActionListener{
 	private NewAccountController ContrNewAcc;
 	private EditAccountController ContrEditAcc;
 	private AddTitleController ContrAddTitle;
+	private HomepageController ContrHomepage;
 	
 	public AdmController() {
 		View = new AdmView(this);
@@ -38,8 +40,8 @@ public class AdmController implements ActionListener{
 		}
 		
 		//redirect to the welcome page
-		if(e.getActionCommand().equals("Logout")) {
-			ContrWelcome = new WelcomeController();
+		if(e.getActionCommand().equals("Back")) {
+			ContrHomepage = new HomepageController();
 			View.dispose();
 		}
 		

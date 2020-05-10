@@ -28,7 +28,9 @@ public class EditAccountController extends Connect implements ActionListener {
 	}
 
 	
-
+	/**
+	 * perform the action according to what button is pressed
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -59,7 +61,10 @@ public class EditAccountController extends Connect implements ActionListener {
 		
 	}
 
-
+	/**
+	 * this method takes care of what happens when the button search is pressed
+	 * it performs whether it is empty validation
+	 */
 	private void SearchButtonPressed() {
 		
 		String argument = View.GetSearchArgument();
@@ -73,15 +78,18 @@ public class EditAccountController extends Connect implements ActionListener {
 			query = "SELECT * FROM ultravision.users WHERE username LIKE '%" 
 					+ argument + "%' OR surname LIKE '%" + argument + "%' OR loyalty_card LIKE '%" + argument + "%';";
 			AccountInfo = DBConnection.ReadCustomerData(query);
-			System.out.println(AccountInfo);
+			
 			
 		}
 	}
 	
 	
-	//this method will populate the text fields with the information available on the database
+	/**
+	 * this method will populate the text fields with the information available on the database
+	 * it was not possible to get this feature to work so whenever the customer is called from the database the combo box is not updated
+	 */
 	private void PopulateFields() {
-		//clear residual data before inputing new data	
+		//clear residual data before inserting new data	
 		int index = 0;
 		View.ClearFields();
 		if(AccountInfo.get(1) == "MusicLover") {
@@ -104,7 +112,10 @@ public class EditAccountController extends Connect implements ActionListener {
 		
 		}
 
-
+	/**
+	 * implements all the major validations of this class
+	 * @return true or false
+	 */
 	private boolean ValidateFields() {
 		
 		boolean validation = false;
@@ -124,8 +135,10 @@ public class EditAccountController extends Connect implements ActionListener {
 	}
 
 
-	//update customer data on the database (the update has to be done searching through 
-	//the loyalty card as its the only way to guarantee safety of the data)
+	/**
+	 * update customer data on the database (the update has to be done searching through 
+	 * the loyalty card as its the only way to guarantee safety of the data)
+	 */
 	private void UpdateButtonPressed() {
 		
 		boolean queryresult;

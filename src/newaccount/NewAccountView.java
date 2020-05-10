@@ -127,6 +127,8 @@ public class NewAccountView extends JFrame {
 
 	}
 	
+	//getters
+	
 	public String GetName() {
 		return NameTextField.getText().trim();
 	}
